@@ -112,9 +112,14 @@ int CANControllerClass::parsePacket()
   return 0;
 }
 
-long CANControllerClass::packetId()
+long CANControllerClass::packetRxId()
 {
   return _rxId;
+}
+
+long CANControllerClass::packetTxId()
+{
+  return _txId;
 }
 
 bool CANControllerClass::packetExtended()

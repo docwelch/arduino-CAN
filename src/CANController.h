@@ -17,7 +17,8 @@ public:
   virtual int endPacket();
 
   virtual int parsePacket();
-  long packetId();
+  long packetRxId();
+  long packetTxId();
   bool packetExtended();
   bool packetRtr();
   int packetDlc();
