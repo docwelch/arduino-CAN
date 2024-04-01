@@ -67,7 +67,7 @@ int ESP32SJA1000Class::begin(long baudRate)
   gpio_pad_select_gpio(_txPin);
 
   modifyRegister(REG_CDR, 0x80, 0x80); // pelican mode
-  modifyRegister(REG_BTR0, 0xc0, 0x40); // SJW = 1
+  modifyRegister(REG_BTR0, 0xc0, 0x0); // SJW = 1
   modifyRegister(REG_BTR1, 0x70, 0x10); // TSEG2 = 1
 
   switch (baudRate) {
@@ -122,6 +122,15 @@ int ESP32SJA1000Class::begin(long baudRate)
 
   modifyRegister(REG_BTR1, 0x80, 0x80); // SAM = 1
   writeRegister(REG_IER, 0xff); // enable all interrupts
+
+  // modifyRegister(REG_IER, 0x10, 0); // From rev2 used as "divide BRP by 2"
+  esp_chip_info_t chip;
+  esp_chip_info (&chip);
+  if (chip.revision >= 2)
+  {
+    modifyRegister(REG_IER, 0x10, 0); // From rev2 used as "divide BRP by 2"
+  }
+
 
   // set filter to allow anything
   writeRegister(REG_ACRn(0), 0x00);
